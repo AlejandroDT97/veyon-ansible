@@ -1,9 +1,8 @@
 ---
 - name: Instalar y configurar Veyon
   hosts: localhost
-  become: yes
+  become: true
   tasks:
-
     - name: Instalar Veyon desde los repositorios oficiales
       apt:
         name: veyon
@@ -14,19 +13,14 @@
       file:
         path: /etc/veyon/keys/public/teacher
         state: directory
-        owner: root
-        group: profesorado
         mode: '0755'
 
     - name: Copiar clave pública
       copy:
         src: teacher_public_key.pem
         dest: /etc/veyon/keys/public/teacher/key
-        owner: root
-        group: profesorado
         mode: '0644'
 
     - name: Importar clave
-      shell: |
-        export XDG_RUNTIME_DIR=/run/user/$(id -u)
-        veyon-cli authkeys import teacher public
+      command: >
+        bash -c "XDG_RUNTIME_DIR=/tmp/runtime-root veyon-cli authkeys import teacher public"
