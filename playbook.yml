@@ -3,11 +3,17 @@
   hosts: localhost
   become: yes
   tasks:
+
+    - name: Añadir repositorio Veyon
+      apt_repository:
+        repo: 'ppa:veyon/stable'
+        state: present
+        update_cache: yes
+
     - name: Instalar Veyon
       apt:
         name: veyon
         state: present
-        update_cache: yes
 
     - name: Copiar clave pública
       copy:
