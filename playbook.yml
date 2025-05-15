@@ -4,12 +4,7 @@
   become: yes
   tasks:
 
-    - name: Añadir repositorio Veyon
-      apt_repository:
-        repo: ppa:veyon/ppa
-        state: present
-
-    - name: Instalar Veyon
+    - name: Instalar Veyon desde los repositorios oficiales
       apt:
         name: veyon
         state: present
