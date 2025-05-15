@@ -1,4 +1,4 @@
-k---
+---
 - name: Instalar y configurar Veyon
   hosts: localhost
   become: yes
@@ -32,4 +32,3 @@ k---
 
     - name: Importar clave
       command: veyon-cli authkeys import teacher public
-
