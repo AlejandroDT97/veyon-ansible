@@ -6,9 +6,8 @@
 
     - name: Añadir repositorio Veyon
       apt_repository:
-        repo: ppa:veyon/stable
+        repo: ppa:veyon/ppa
         state: present
-        update_cache: yes
 
     - name: Instalar Veyon
       apt:
@@ -20,15 +19,19 @@
       file:
         path: /etc/veyon/keys/public/teacher
         state: directory
-        mode: '0755'
         owner: root
-        group: root
+        group: profesorado
+        mode: '0755'
 
     - name: Copiar clave pública
       copy:
         src: teacher_public_key.pem
         dest: /etc/veyon/keys/public/teacher/key
+        owner: root
+        group: profesorado
         mode: '0644'
 
     - name: Importar clave
-      command: veyon-cli authkeys import teacher public
+      shell: |
+        export XDG_RUNTIME_DIR=/run/user/$(id -u)
+        veyon-cli authkeys import teacher public
