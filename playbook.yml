@@ -1,0 +1,19 @@
+---
+- name: Instalar y configurar Veyon
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Instalar Veyon
+      apt:
+        name: veyon
+        state: present
+        update_cache: yes
+
+    - name: Copiar clave pública
+      copy:
+        src: teacher_public_key.pem
+        dest: /etc/veyon/keys/public/teacher/key
+        mode: '0644'
+
+    - name: Importar clave
+      command: veyon-cli authkeys import teacher public
