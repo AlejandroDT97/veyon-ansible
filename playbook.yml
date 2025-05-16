@@ -18,11 +18,20 @@
     - name: Copiar clave pública
       copy:
         src: teacher_public_key.pem
-        dest: /etc/veyon/keys/public/teacher/teacher_public_key.pem
+        dest: /tmp/teacher_public_key.pem
         mode: '0644'
 
     - name: Importar clave pública en sesión de usuario gráfico
-      become: false
-        environment:
-        XDG_RUNTIME_DIR: "/run/user/{{ lookup('pipe', 'id -u') }}"
         command: veyon-cli authkeys import teacher/public teacher_public_key.pem
+
+    - name: Dar acceso al grupo
+        command: veyon-cli authkeys setaccessgroup teacher/public profesorado
+
+    - name: Abrir puerto
+        command: ufw allow 11100/tcp
+
+    - name: Cambiar método de autenticación
+        command: veyon-cli config set Authentication/Method 1
+
+    - name: Reiniciar Servicio
+        command: veyon-cli service restart
