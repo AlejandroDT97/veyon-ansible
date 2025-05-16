@@ -3,11 +3,12 @@
   hosts: localhost
   become: true
   tasks:
+
     - name: Instalar Veyon desde los repositorios oficiales
       apt:
         name: veyon
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Crear directorio de clave pública si no existe
       file:
@@ -22,5 +23,7 @@
         mode: '0644'
 
     - name: Importar clave pública en sesión de usuario gráfico
-      command: >
-        bash -c "XDG_RUNTIME_DIR=/run/user/$(id -u profesorado) sudo -u profesorado veyon-cli authkeys import teacher public"
+      become: false
+      environment:
+        XDG_RUNTIME_DIR: "/run/user/{{ lookup('pipe', 'id -u') }}"
+      command: veyon-cli authkeys import teacher public
