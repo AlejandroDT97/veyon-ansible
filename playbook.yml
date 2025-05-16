@@ -3,12 +3,11 @@
   hosts: localhost
   become: true
   tasks:
-
     - name: Instalar Veyon desde los repositorios oficiales
       apt:
         name: veyon
         state: present
-        update_cache: true
+        update_cache: yes
 
     - name: Crear directorio de clave pública si no existe
       file:
@@ -21,7 +20,3 @@
         src: teacher_public_key.pem
         dest: /etc/veyon/keys/public/teacher/key
         mode: '0644'
-
-    - name: Importar clave pública como usuario gráfico
-      command: >
-        su -l profesorado -c "XDG_RUNTIME_DIR=/run/user/1000 veyon-cli authkeys import teacher public"
