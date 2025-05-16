@@ -23,7 +23,4 @@
         mode: '0644'
 
     - name: Importar clave pública en sesión de usuario gráfico
-      become: false
-      environment:
-        XDG_RUNTIME_DIR: "/run/user/{{ lookup('pipe', 'id -u') }}"
-      command: veyon-cli authkeys import teacher public
+      command: bash -c "XDG_RUNTIME_DIR=/run/user/1000 sudo -u profesorado veyon-cli authkeys import teacher public"
