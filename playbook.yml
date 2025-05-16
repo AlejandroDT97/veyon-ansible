@@ -3,6 +3,7 @@
   hosts: localhost
   become: true
   tasks:
+
     - name: Instalar Veyon desde los repositorios oficiales
       apt:
         name: veyon
@@ -22,5 +23,5 @@
         mode: '0644'
 
     - name: Importar clave
-      command: >
-        bash -c "XDG_RUNTIME_DIR=/tmp/runtime-root veyon-cli authkeys import teacher public"
+      become_user: profesorado
+      command: veyon-cli authkeys import teacher public
