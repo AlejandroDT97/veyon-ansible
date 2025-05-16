@@ -22,5 +22,6 @@
         dest: /etc/veyon/keys/public/teacher/key
         mode: '0644'
 
-    - name: Importar clave pública en sesión de usuario gráfico
-      command: bash -c "XDG_RUNTIME_DIR=/run/user/1000 sudo -u profesorado veyon-cli authkeys import teacher public"
+    - name: Importar clave pública como usuario gráfico
+      command: >
+        su -l profesorado -c "XDG_RUNTIME_DIR=/run/user/1000 veyon-cli authkeys import teacher public"
